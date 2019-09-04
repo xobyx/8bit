@@ -4,14 +4,27 @@ class Parser(private val memory: Memory) {
     private val code: String = """
     0000:LDA 1000
     0001:ADD 1001
-    0010:OUT 0000
-    0011:HLT 0000
+    0010:ADD 1101
+    0011:OUT 0000
+    0100:HLT 0000
     1000:00000001
     1001:00000101
+    1101:00000001
+""".trimIndent()
+
+    private val code2: String = """
+    0000:LDI 0001
+    0001:STA 1000
+    0010:LDI 0001
+    0011:STA 1001
+    0100:LDA 1000
+    0101:ADD 1001
+    0110:OUT 0000
+    0111:JMP 0001
 """.trimIndent()
 
     fun parse() {
-        val rows = code.split('\n')
+        val rows = code2.split('\n')
         rows.forEach { row ->
             val splitRow = row.split(":")
             val address = splitRow[0]
@@ -24,8 +37,6 @@ class Parser(private val memory: Memory) {
             } else {
                 data = dataSegment
             }
-
-            //println("$address:$data")
             memory.putData(bitsToByte(address), bitsToByte(data))
         }
     }

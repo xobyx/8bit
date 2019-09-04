@@ -8,25 +8,30 @@ class ControlLogic(private val components: List<Component>) {
 
         val instructionRegister = components.first { it is InstructionRegister } as InstructionRegister
 
-        sendControlWords(ControlWords.CO, ControlWords.MI)
-        tick()
-        sendControlWords(ControlWords.RO, ControlWords.II)
-        tick()
-        sendControlWords(ControlWords.CE)
-        tick()
+        while(true) {
+            sendControlWords(ControlWords.CO, ControlWords.MI)
+            tick()
+            sendControlWords(ControlWords.RO, ControlWords.II)
+            tick()
+            sendControlWords(ControlWords.CE)
+            tick()
 
-        val instructionCode = ((instructionRegister.data.toInt() shr 4) and 0b0000_1111).toByte()
-        InstructionSet.values().forEach {
-            if (it.value == instructionCode) {
-                it.microInstructions.forEach { mi ->
-                    sendControlWords(*mi.controlWords)
-                    tick()
+            val instructionCode = ((instructionRegister.data.toInt() shr 4) and 0b0000_1111).toByte()
+            InstructionSet.values().forEach {
+                if (it.value == instructionCode) {
+                    it.microInstructions.forEach { mi ->
+                        sendControlWords(*mi.controlWords)
+                        tick()
+                        if (mi.controlWords.contains(ControlWords.HLT)) {
+                            return
+                        }
+                    }
+                    println(it.name)
                 }
-                println(it.name)
             }
-        }
 
-        print()
+            print()
+        }
     }
 
     private fun print() {

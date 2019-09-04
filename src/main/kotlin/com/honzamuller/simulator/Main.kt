@@ -110,11 +110,6 @@ class Main {
 
     private fun p2() {
         controlLogic.a()
-        controlLogic.a()
-        controlLogic.a()
-        controlLogic.a()
-        controlLogic.a()
-        controlLogic.a()
     }
 
     private fun tick() {

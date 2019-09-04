@@ -10,23 +10,21 @@ enum class InstructionSet(val value: Byte, val microInstructions: List<MicroInst
         MicroInstruction(ControlWords.IO, ControlWords.MI),
         MicroInstruction(ControlWords.RO, ControlWords.BI),
         MicroInstruction(ControlWords.EO, ControlWords.AI))),
+    SUB(0b0000_0011, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.MI),
+        MicroInstruction(ControlWords.RO, ControlWords.BI),
+        MicroInstruction(ControlWords.EO, ControlWords.AI, ControlWords.SU))),
+    STA(0b0000_0100, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.MI),
+        MicroInstruction(ControlWords.AO, ControlWords.RI)
+    )),
+    LDI(0b0000_0101, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.AI)
+    )),
+    JMP(0b0000_0110, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.J)
+    )),
     OUT(0b0000_1110, listOf(MicroInstruction(ControlWords.AO, ControlWords.OI))),
     HLT(0b0000_1111, listOf(MicroInstruction(ControlWords.HLT)));
-
-    fun getMicroInstructionSet(): List<MicroInstruction> {
-        val list = getFetchCycle()
-        list.addAll(microInstructions)
-        return list
-    }
-
 }
-
-private fun defineInstruction(instructions: List<MicroInstruction>): List<MicroInstruction> {
-    return getFetchCycle().also { it.addAll(instructions)}.toList()
-}
-
-private fun getFetchCycle() = mutableListOf (
-    MicroInstruction(ControlWords.CO, ControlWords.MI),
-    MicroInstruction(ControlWords.RO, ControlWords.II, ControlWords.CE))
-
 class MicroInstruction(vararg val controlWords: ControlWords)
