@@ -1,0 +1,12 @@
+.idea/
+.gradle
+*.iml
+local.properties
+gradle.properties
+build/
+out/
+.DS_Store
+*.hprof
+*.log
+*.log.*
+lint-report.xml
