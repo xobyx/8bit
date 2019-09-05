@@ -24,8 +24,24 @@ class Parser(private val memory: Memory) {
     0111:JMP 0001
 """.trimIndent()
 
+    private val code3: String = """
+    0000:LDI 0001
+    0001:STA 1110
+    0010:LDI 0000
+    0011:OUT
+    0100:ADD 1110
+    0101:STA 1111
+    0110:LDA 1110
+    0111:STA 1101
+    1000:LDA 1111
+    1001:STA 1110
+    1010:LDA 1101
+    1011:JC 0000
+    1100:JMP 0011
+""".trimIndent()
+
     fun parse() {
-        val rows = code.split('\n')
+        val rows = code3.split('\n')
         rows.forEach { row ->
             val splitRow = row.split(":")
             val address = splitRow[0]

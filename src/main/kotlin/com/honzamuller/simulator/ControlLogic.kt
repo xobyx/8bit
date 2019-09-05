@@ -4,14 +4,13 @@ import kotlin.system.exitProcess
 
 class ControlLogic(private val components: List<Component>) {
     var instruction: InstructionSet? = null
-    private val instructionRegister: InstructionRegister = components.first { it is InstructionRegister } as InstructionRegister
+    private val instructionRegister: InstructionRegister =
+        components.first { it is InstructionRegister } as InstructionRegister
 
     fun run(iteration: Int) {
         val internalCycle = iteration % 7
         process(internalCycle)
-        //if (internalCycle == 6) {
-            printRegisterA(iteration)
-        //}
+        printRegisters(iteration)
     }
 
     private fun process(step: Int) {
@@ -69,7 +68,7 @@ class ControlLogic(private val components: List<Component>) {
         }
     }
 
-    fun printRegisterA(cpuCycle: Int) {
+    private fun printRegisters(cpuCycle: Int) {
         val registerA = components.first { it is RegisterA } as RegisterA
         val registerB = components.first { it is RegisterB } as RegisterB
         val memoryAddressRegister = components.first { it is MemoryAddressRegister } as MemoryAddressRegister

@@ -24,6 +24,12 @@ enum class InstructionSet(val value: Byte, val microInstructions: List<MicroInst
     JMP(0b0000_0110, listOf(
         MicroInstruction(ControlWords.IO, ControlWords.J)
     )),
+    JZ(0b0000_0111, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.J)
+    )),
+    JC(0b0000_1000, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.J)
+    )),
     OUT(0b0000_1110, listOf(MicroInstruction(ControlWords.AO, ControlWords.OI))),
     HLT(0b0000_1111, listOf(MicroInstruction(ControlWords.HLT)));
 }
