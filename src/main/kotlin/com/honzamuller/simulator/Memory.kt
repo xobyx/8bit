@@ -1,5 +1,8 @@
 package com.honzamuller.simulator
 
+import java.lang.Exception
+import java.lang.RuntimeException
+
 class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister) : BusComponent(bus) {
 
     var memory = byteArrayOf(
@@ -37,7 +40,13 @@ class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister)
     override fun onTick() {
         when (mode) {
             InputOutputMode.INPUT -> memory[memoryAddressRegister.data.toInt()] = bus.data
-            InputOutputMode.OUTPUT -> bus.data = memory[memoryAddressRegister.data.toInt()]
+            InputOutputMode.OUTPUT -> {
+                try {
+                    bus.data = memory[memoryAddressRegister.data.toInt()]
+                } catch (e: MemoryException) {
+                    println("Memory overflow")
+                }
+            }
             else -> {
             }
         }
@@ -53,9 +62,13 @@ class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister)
         println("Memory content")
         println("--------------")
         for ((index, value) in memory.withIndex()) {
-            println("${index.toByte().format(4)}:${value.format()}")
+            println("${index.toByte().formatFancy(4)}:${value.formatFancy()}")
         }
         println("--------------")
         println()
     }
+}
+
+class MemoryException : ArrayIndexOutOfBoundsException() {
+
 }

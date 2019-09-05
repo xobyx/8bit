@@ -11,6 +11,6 @@ class RegisterB(bus: Bus) : Register(bus) {
     }
 
     override fun printContent() {
-        println("RB: ${data.format()} | $data")
+        println("RB: ${data.formatFancy()} | $data")
     }
 }

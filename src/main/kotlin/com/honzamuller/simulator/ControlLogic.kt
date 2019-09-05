@@ -1,37 +1,48 @@
 package com.honzamuller.simulator
 
-import kotlin.experimental.and
+import kotlin.system.exitProcess
 
 class ControlLogic(private val components: List<Component>) {
+    var instruction: InstructionSet? = null
+    private val instructionRegister: InstructionRegister = components.first { it is InstructionRegister } as InstructionRegister
 
-    fun a() {
+    fun run(iteration: Int) {
+        val internalCycle = iteration % 7
+        process(internalCycle)
+        //if (internalCycle == 6) {
+            printRegisterA(iteration)
+        //}
+    }
 
-        val instructionRegister = components.first { it is InstructionRegister } as InstructionRegister
-
-        while(true) {
-            sendControlWords(ControlWords.CO, ControlWords.MI)
-            tick()
-            sendControlWords(ControlWords.RO, ControlWords.II)
-            tick()
-            sendControlWords(ControlWords.CE)
-            tick()
-
-            val instructionCode = ((instructionRegister.data.toInt() shr 4) and 0b0000_1111).toByte()
-            InstructionSet.values().forEach {
-                if (it.value == instructionCode) {
-                    it.microInstructions.forEach { mi ->
-                        sendControlWords(*mi.controlWords)
-                        tick()
-                        if (mi.controlWords.contains(ControlWords.HLT)) {
-                            return
-                        }
-                    }
-                    println(it.name)
+    private fun process(step: Int) {
+        when (step) {
+            0 -> {
+                instruction = null
+                sendControlWords(ControlWords.CO, ControlWords.MI)
+            }
+            1 -> sendControlWords(ControlWords.RO, ControlWords.II, ControlWords.CE)
+            in 2..5 -> {
+                if (instruction == null) {
+                    instruction = getInstruction(((instructionRegister.data.toInt() shr 4) and 0b0000_1111).toByte())
+                }
+                val microInstructions = instruction!!.microInstructions
+                val internalStep = step - 2
+                if (internalStep < microInstructions.size) {
+                    val mi = microInstructions[internalStep]
+                    sendControlWords(*mi.controlWords)
                 }
             }
-
-            print()
         }
+        tick()
+    }
+
+    private fun getInstruction(instructionCode: Byte): InstructionSet {
+        InstructionSet.values().forEach {
+            if (it.value == instructionCode) {
+                return it
+            }
+        }
+        return InstructionSet.NOP
     }
 
     private fun print() {
@@ -50,11 +61,29 @@ class ControlLogic(private val components: List<Component>) {
     }
 
     private fun sendControlWords(vararg controlWords: ControlWords) {
-        println(controlWords.toList().toString())
+        //println(controlWords.toList().toString())
         for (bc in components) {
             controlWords.forEach { word ->
                 bc.controlWord(word)
             }
         }
+    }
+
+    fun printRegisterA(cpuCycle: Int) {
+        val registerA = components.first { it is RegisterA } as RegisterA
+        val registerB = components.first { it is RegisterB } as RegisterB
+        val memoryAddressRegister = components.first { it is MemoryAddressRegister } as MemoryAddressRegister
+        val instructionRegister = components.first { it is InstructionRegister } as InstructionRegister
+        val outputRegister = components.first { it is OutputRegister } as OutputRegister
+        val programCounter = components.first { it is ProgramCounter } as ProgramCounter
+        print("CPU cycle: $cpuCycle \t| ")
+        print("RA: ${registerA.data.formatFancy()} | ")
+        print("RB: ${registerB.data.formatFancy()} | ")
+        print("IR: ${instructionRegister.data.formatFancy()} | ")
+        print("MR: ${memoryAddressRegister.data.formatFancy()} | ")
+        print("PC: ${programCounter.data.formatFancy()} | ")
+        print("OR: ${outputRegister.data.formatFancy()} | ")
+        print("OR (dec): ${outputRegister.data} | ")
+        print("\r")
     }
 }

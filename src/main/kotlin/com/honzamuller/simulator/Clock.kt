@@ -9,7 +9,7 @@ class Clock : Component() {
         running = true
         while (running) {
             onTick.invoke(counter ++)
-            Thread.sleep(100)
+            Thread.sleep(200)
         }
     }
 
