@@ -10,17 +10,18 @@ class Computer {
 
 
     init {
-        clock = Clock().also { allComponents.add(it) }
+        clock = Clock(1).also { allComponents.add(it) }
         bus = Bus()
+        val flagsRegister = FlagsRegister().also { allComponents.add(it) }
         val regA = RegisterA(bus).also { allComponents.add(it);busComponents.add(it) }
         val regB = RegisterB(bus).also { allComponents.add(it);busComponents.add(it) }
-        ALU(bus, regA, regB).also { allComponents.add(it);busComponents.add(it) }
+        ALU(bus, regA, regB, flagsRegister).also { allComponents.add(it);busComponents.add(it) }
         val instructionRegister = InstructionRegister(bus).also { allComponents.add(it);busComponents.add(it) }
         ProgramCounter(bus).also { allComponents.add(it);busComponents.add(it) }
         val mar = MemoryAddressRegister(bus).also { allComponents.add(it);busComponents.add(it) }
         val memory = Memory(bus, mar).also { allComponents.add(it);busComponents.add(it) }
         OutputRegister(bus).also { allComponents.add(it);busComponents.add(it) }
-        controlLogic = ControlLogic(allComponents)
+        controlLogic = ControlLogic(allComponents, flagsRegister)
         memory.clear()
         val parser = Parser(memory)
         parser.parse()

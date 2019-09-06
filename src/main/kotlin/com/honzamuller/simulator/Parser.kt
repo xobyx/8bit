@@ -8,9 +8,9 @@ class Parser(private val memory: Memory) {
     0011:ADD 1101
     0100:OUT
     0101:HLT
-    1000:00001001
-    1001:00001001
-    1101:00001001
+    1000:00000001
+    1001:00000001
+    1101:00001111
 """.trimIndent()
 
     private val code2: String = """
@@ -38,6 +38,20 @@ class Parser(private val memory: Memory) {
     1010:LDA 1101
     1011:JC 0000
     1100:JMP 0011
+""".trimIndent()
+
+    private val code4: String = """
+    0000:LDI 0011
+    0001:OUT
+    0010:SUB 1111
+    0011:JZ 0000
+    0100:JMP 0001
+    1111:00000001
+""".trimIndent()
+
+    private val code5: String = """
+    0000:NOP
+    0001:JMP 0000
 """.trimIndent()
 
     fun parse() {

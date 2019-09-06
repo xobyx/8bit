@@ -2,7 +2,7 @@ package com.honzamuller.simulator
 
 import kotlin.system.exitProcess
 
-class ControlLogic(private val components: List<Component>) {
+class ControlLogic(private val components: List<Component>, private val flagsRegister: FlagsRegister) {
     var instruction: InstructionSet? = null
     private val instructionRegister: InstructionRegister =
         components.first { it is InstructionRegister } as InstructionRegister
@@ -10,6 +10,7 @@ class ControlLogic(private val components: List<Component>) {
     fun run(iteration: Int) {
         val internalCycle = iteration % 7
         process(internalCycle)
+        //print()
         printRegisters(iteration)
     }
 
@@ -27,8 +28,17 @@ class ControlLogic(private val components: List<Component>) {
                 val microInstructions = instruction!!.microInstructions
                 val internalStep = step - 2
                 if (internalStep < microInstructions.size) {
-                    val mi = microInstructions[internalStep]
-                    sendControlWords(*mi.controlWords)
+
+                    if (instruction == InstructionSet.JZ && !flagsRegister.flagZero) {
+                        sendControlWords(ControlWords.NONE)
+                    } else if (instruction == InstructionSet.JC && !flagsRegister.flagCarry) {
+                        sendControlWords(ControlWords.NONE)
+                    } else {
+                        val mi = microInstructions[internalStep]
+                        sendControlWords(*mi.controlWords)
+                    }
+                } else {
+                    sendControlWords(ControlWords.NONE)
                 }
             }
         }

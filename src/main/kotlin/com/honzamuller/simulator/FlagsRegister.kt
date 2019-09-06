@@ -1,17 +1,20 @@
 package com.honzamuller.simulator
 
-class FlagsRegister(bus: Bus, alu: ALU) : Register(bus) {
+class FlagsRegister : Component() {
+
+    var flagZero = false
+    var flagCarry = false
+
+    override fun onClear() {
+        flagZero = false
+        flagCarry = false
+    }
 
     override fun onControlWord(word: ControlWords): Boolean {
-        when (word) {
-            ControlWords.AO -> enableOutput()
-            ControlWords.AI -> enableInput()
-            else -> return false
-        }
-        return true
+        return false
     }
 
     override fun printContent() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Flag zero:$flagZero, carry:$flagCarry")
     }
 }

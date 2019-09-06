@@ -16,6 +16,7 @@ enum class ControlWords {
     CE,     // Register Counter - Increment
     CO,     // Register Counter - Out
     J,      // Register Counter - Jump
-    FI      // ALU - Flags
+    FI,     // ALU - Flags
+    NONE    // Do Nothing
 
 }

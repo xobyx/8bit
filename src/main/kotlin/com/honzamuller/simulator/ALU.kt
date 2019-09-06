@@ -1,6 +1,11 @@
 package com.honzamuller.simulator
 
-class ALU(bus: Bus, private val registerA: RegisterA, private val registerB: RegisterB) : BusComponent(bus) {
+class ALU(
+    bus: Bus,
+    private val registerA: RegisterA,
+    private val registerB: RegisterB,
+    private val flagsRegister: FlagsRegister
+) : BusComponent(bus) {
 
     private var data: Byte = 0b00000000
 
@@ -22,9 +27,12 @@ class ALU(bus: Bus, private val registerA: RegisterA, private val registerB: Reg
         } else {
             registerA.data.plus(registerB.data).toByte()
         }
+        flagsRegister.flagZero = data.toInt() == 0
+        flagsRegister.flagCarry = data.toInt() < 0
         when (mode) {
             InputOutputMode.OUTPUT -> bus.data = data
-            else -> {}
+            else -> {
+            }
         }
     }
 
