@@ -1,8 +1,6 @@
 package com.honzamuller.simulator
 
 import kotlin.experimental.and
-import kotlin.experimental.or
-import kotlin.experimental.xor
 
 class InstructionRegister(bus: Bus) : Register(bus) {
 

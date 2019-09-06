@@ -2,7 +2,7 @@ package com.honzamuller.simulator
 
 class ProgramCounter(bus: Bus) : BusComponent(bus) {
 
-    var data: Byte = 0b0000000
+    var data: Int = 0b0000000
     private var increment: Boolean = false
 
     override fun onControlWord(word: ControlWords): Boolean {

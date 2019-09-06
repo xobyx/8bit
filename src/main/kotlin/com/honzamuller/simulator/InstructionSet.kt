@@ -1,5 +1,6 @@
 package com.honzamuller.simulator
 
+@Suppress("unused")
 enum class InstructionSet(val value: Byte, val microInstructions: List<MicroInstruction>) {
 
     NOP(0b0000_0000, listOf()),
@@ -9,11 +10,11 @@ enum class InstructionSet(val value: Byte, val microInstructions: List<MicroInst
     ADD(0b0000_0010, listOf(
         MicroInstruction(ControlWords.IO, ControlWords.MI),
         MicroInstruction(ControlWords.RO, ControlWords.BI),
-        MicroInstruction(ControlWords.EO, ControlWords.AI))),
+        MicroInstruction(ControlWords.EO, ControlWords.AI, ControlWords.FI))),
     SUB(0b0000_0011, listOf(
         MicroInstruction(ControlWords.IO, ControlWords.MI),
         MicroInstruction(ControlWords.RO, ControlWords.BI),
-        MicroInstruction(ControlWords.EO, ControlWords.AI, ControlWords.SU))),
+        MicroInstruction(ControlWords.EO, ControlWords.AI, ControlWords.SU, ControlWords.FI))),
     STA(0b0000_0100, listOf(
         MicroInstruction(ControlWords.IO, ControlWords.MI),
         MicroInstruction(ControlWords.AO, ControlWords.RI)

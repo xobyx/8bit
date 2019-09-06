@@ -41,12 +41,14 @@ class Parser(private val memory: Memory) {
 """.trimIndent()
 
     private val code4: String = """
-    0000:LDI 0011
+    0000:LDA 1111
     0001:OUT
-    0010:SUB 1111
-    0011:JZ 0000
-    0100:JMP 0001
-    1111:00000001
+    0010:ADD 1110
+    0011:JC 0000
+    0100:OUT
+    0101:HLT
+    1110:00000010
+    1111:11111110
 """.trimIndent()
 
     private val code5: String = """
@@ -74,7 +76,7 @@ class Parser(private val memory: Memory) {
             } else {
                 data = dataSegment
             }
-            memory.putData(bitsToByte(address), bitsToByte(data))
+            memory.putData(bitsToByte(address), bitsToInt(data))
         }
     }
 
@@ -87,4 +89,12 @@ class Parser(private val memory: Memory) {
         return result.toByte()
     }
 
+    private fun bitsToInt(bits: String): Int {
+        var result = 0b0000_0000
+        for (element in bits) {
+            result = result.shl(1)
+            if (element == '1') result = result or 0b0000_0001
+        }
+        return result
+    }
 }

@@ -1,7 +1,7 @@
 package com.honzamuller.simulator
 
 abstract class Register(bus: Bus) : BusComponent(bus) {
-    var data: Byte = 0b0000000
+    var data: Int = 0b0000000
 
     override fun onClear() {
         data = 0b0000000

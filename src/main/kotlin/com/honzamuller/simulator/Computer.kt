@@ -4,13 +4,13 @@ class Computer {
 
     private val allComponents = mutableListOf<Component>()
     private val busComponents = mutableListOf<BusComponent>()
-    private lateinit var bus: Bus
-    private lateinit var controlLogic: ControlLogic
+    private var bus: Bus
+    private var controlLogic: ControlLogic
     private val clock: Clock
 
 
     init {
-        clock = Clock(1).also { allComponents.add(it) }
+        clock = Clock(10).also { allComponents.add(it) }
         bus = Bus()
         val flagsRegister = FlagsRegister().also { allComponents.add(it) }
         val regA = RegisterA(bus).also { allComponents.add(it);busComponents.add(it) }

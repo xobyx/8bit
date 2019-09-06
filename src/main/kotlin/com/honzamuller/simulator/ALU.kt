@@ -7,15 +7,16 @@ class ALU(
     private val flagsRegister: FlagsRegister
 ) : BusComponent(bus) {
 
-    private var data: Byte = 0b00000000
+    private var data: Int = 0b00000000
 
     private var minusOperator = false
+    private var enableFlags = false
 
     override fun onControlWord(word: ControlWords): Boolean {
         when (word) {
             ControlWords.EO -> enableOutput()
             ControlWords.SU -> minusOperator = true
-            ControlWords.FI -> TODO()
+            ControlWords.FI -> enableFlags = true
             else -> return false
         }
         return true
@@ -23,12 +24,14 @@ class ALU(
 
     override fun onTick() {
         data = if (minusOperator) {
-            registerA.data.minus(registerB.data).toByte()
+            registerA.data.minus(registerB.data)
         } else {
-            registerA.data.plus(registerB.data).toByte()
+            registerA.data.plus(registerB.data)
         }
-        flagsRegister.flagZero = data.toInt() == 0
-        flagsRegister.flagCarry = data.toInt() < 0
+        if (enableFlags) {
+            flagsRegister.flagZero = data == 0
+            flagsRegister.flagCarry = data > 255
+        }
         when (mode) {
             InputOutputMode.OUTPUT -> bus.data = data
             else -> {
@@ -38,6 +41,7 @@ class ALU(
 
     override fun onPrepare() {
         minusOperator = false
+        enableFlags = false
     }
 
     override fun onClear() {

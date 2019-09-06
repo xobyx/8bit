@@ -18,3 +18,22 @@ fun Byte.formatFancy(binaryDigits: Int = 8): String {
     }
     return sb.toString()
 }
+
+fun Int.format(binaryDigits: Int = 8): String {
+    val sb = StringBuffer(binaryDigits)
+    for (i in binaryDigits - 1 downTo 0) {
+        val bit = (this shr i) and 0b00000001
+        sb.append(bit)
+    }
+    return sb.toString()
+}
+
+
+fun Int.formatFancy(binaryDigits: Int = 8): String {
+    val sb = StringBuffer(binaryDigits)
+    for (i in binaryDigits - 1 downTo 0) {
+        val bit = (this shr i) and 0b00000001
+        sb.append(if (bit == 1) "●" else "○")
+    }
+    return sb.toString()
+}
