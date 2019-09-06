@@ -24,7 +24,9 @@ class Computer {
         controlLogic = ControlLogic(allComponents, flagsRegister)
         memory.clear()
         val parser = Parser(memory)
-        parser.parse()
+
+
+        parser.parse(Program.SUM_2_NUMBERS)
         allComponents.add(bus)
     }
 
