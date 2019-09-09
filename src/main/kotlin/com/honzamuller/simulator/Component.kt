@@ -6,7 +6,7 @@ abstract class Component {
         onControlWord(word)
     }
 
-    protected abstract fun onClear()
+    abstract fun onClear()
 
     /**
      * return true if word was consumed

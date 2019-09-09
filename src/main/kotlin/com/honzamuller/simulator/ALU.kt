@@ -7,7 +7,7 @@ class ALU(
     private val flagsRegister: FlagsRegister
 ) : BusComponent(bus) {
 
-    private var data: Int = 0b00000000
+    var data: Int = 0b00000000
 
     private var minusOperator = false
     private var enableFlags = false

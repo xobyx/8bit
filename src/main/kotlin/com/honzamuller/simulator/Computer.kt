@@ -1,16 +1,18 @@
 package com.honzamuller.simulator
 
-class Computer {
+import kotlin.reflect.KClass
+
+class Computer(private val clock: Clock) {
 
     private val allComponents = mutableListOf<Component>()
     private val busComponents = mutableListOf<BusComponent>()
     private var bus: Bus
     private var controlLogic: ControlLogic
-    private val clock: Clock
+    private val parser: Parser
 
 
     init {
-        clock = Clock(10).also { allComponents.add(it) }
+        allComponents.add(clock)
         bus = Bus()
         val flagsRegister = FlagsRegister().also { allComponents.add(it) }
         val regA = RegisterA(bus).also { allComponents.add(it);busComponents.add(it) }
@@ -23,15 +25,21 @@ class Computer {
         OutputRegister(bus).also { allComponents.add(it);busComponents.add(it) }
         controlLogic = ControlLogic(allComponents, flagsRegister)
         memory.clear()
-        val parser = Parser(memory)
+        parser = Parser(memory)
 
 
-        parser.parse(Program.SUM_2_NUMBERS)
         allComponents.add(bus)
     }
 
-    fun run() {
-        clock.start {
+    fun clear() {
+        allComponents.forEach {
+            it.onClear()
+        }
+    }
+
+    fun run(program: Program) {
+        parser.parse(program)
+        clock.registerOnTick {
             controlLogic.run(it)
         }
     }
@@ -47,6 +55,10 @@ class Computer {
 
     fun printMemory() {
         allComponents.first { it is Memory }.printContent()
+    }
+
+    fun <T : Component> getComponent(clazz: KClass<T>): T {
+        return allComponents.first { it::class == clazz } as T
     }
 
     fun printOutRegister() {

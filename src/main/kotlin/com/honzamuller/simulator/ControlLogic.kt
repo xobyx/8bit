@@ -8,7 +8,7 @@ class ControlLogic(private val components: List<Component>, private val flagsReg
         components.first { it is InstructionRegister } as InstructionRegister
 
     fun run(iteration: Int) {
-        val internalCycle = iteration % 7
+        val internalCycle = iteration % 6
         process(internalCycle)
         //print()
         printRegisters(iteration)
