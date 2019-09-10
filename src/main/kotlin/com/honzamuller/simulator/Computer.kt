@@ -2,13 +2,15 @@ package com.honzamuller.simulator
 
 import kotlin.reflect.KClass
 
-class Computer(private val clock: Clock) {
+class Computer(private val clock: Clock, private val onCw: (List<ControlWords>) -> Unit) {
 
     private val allComponents = mutableListOf<Component>()
     private val busComponents = mutableListOf<BusComponent>()
     private var bus: Bus
     private var controlLogic: ControlLogic
+    private var memory: Memory
     private val parser: Parser
+    private var onError: ((String) -> Unit)? = null
 
 
     init {
@@ -21,9 +23,9 @@ class Computer(private val clock: Clock) {
         val instructionRegister = InstructionRegister(bus).also { allComponents.add(it);busComponents.add(it) }
         ProgramCounter(bus).also { allComponents.add(it);busComponents.add(it) }
         val mar = MemoryAddressRegister(bus).also { allComponents.add(it);busComponents.add(it) }
-        val memory = Memory(bus, mar).also { allComponents.add(it);busComponents.add(it) }
+        memory = Memory(bus, mar).also { allComponents.add(it);busComponents.add(it) }
         OutputRegister(bus).also { allComponents.add(it);busComponents.add(it) }
-        controlLogic = ControlLogic(allComponents, flagsRegister)
+        controlLogic = ControlLogic(allComponents, flagsRegister, onCw)
         memory.clear()
         parser = Parser(memory)
 
@@ -38,7 +40,15 @@ class Computer(private val clock: Clock) {
     }
 
     fun run(program: Program) {
-        parser.parse(program)
+        run(program.getCode())
+    }
+
+    fun registerErrorCallback(callback: (String) -> Unit) {
+        memory.registerErrorCallback(callback)
+    }
+
+    fun run(code: String) {
+        parser.parse(code)
         clock.registerOnTick {
             controlLogic.run(it)
         }

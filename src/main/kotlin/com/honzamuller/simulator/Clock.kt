@@ -35,6 +35,11 @@ class Clock(private val freq: Long) : Component() {
         running = true
     }
 
+    fun stop() {
+        running = false
+        onHaltCallback?.invoke()
+    }
+
     override fun onControlWord(word: ControlWords): Boolean {
         when (word) {
             ControlWords.HLT -> {

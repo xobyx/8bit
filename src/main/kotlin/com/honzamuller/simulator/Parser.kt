@@ -2,10 +2,15 @@ package com.honzamuller.simulator
 
 class Parser(private val memory: Memory) {
 
-    fun parse(program: Program) {
-        val rows = program.getCode().split('\n')
-        rows.forEach { row ->
+    fun parse (program: Program) {
+        parse(program.getCode())
+    }
+
+    fun parse(code: String) {
+        val rows = code.split('\n')
+        for (row in rows) {
             val splitRow = row.split(":")
+            if (splitRow.size != 2) continue
             val address = splitRow[0]
             val dataSegment = splitRow[1]
             var data = ""

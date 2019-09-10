@@ -1,16 +1,13 @@
 package com.honzamuller.simulator
 
-import kotlin.system.exitProcess
-
-class ControlLogic(private val components: List<Component>, private val flagsRegister: FlagsRegister) {
-    var instruction: InstructionSet? = null
+class ControlLogic(private val components: List<Component>, private val flagsRegister: FlagsRegister, private val onCw: (List<ControlWords>) -> Unit) {
+    private var instruction: InstructionSet? = null
     private val instructionRegister: InstructionRegister =
         components.first { it is InstructionRegister } as InstructionRegister
 
     fun run(iteration: Int) {
         val internalCycle = iteration % 6
         process(internalCycle)
-        //print()
         printRegisters(iteration)
     }
 
@@ -70,6 +67,7 @@ class ControlLogic(private val components: List<Component>, private val flagsReg
     }
 
     private fun sendControlWords(vararg controlWords: ControlWords) {
+        onCw.invoke(controlWords.toList())
         //println(controlWords.toList().toString())
         for (bc in components) {
             controlWords.forEach { word ->

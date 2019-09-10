@@ -1,6 +1,11 @@
 package com.honzamuller.simulator
 
+import java.lang.Exception
+import java.lang.RuntimeException
+
 class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister) : BusComponent(bus) {
+
+    private var onError: ((String) -> Unit)? = null
 
     var memory = intArrayOf(
         0b0000_0000,
@@ -21,6 +26,10 @@ class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister)
         0b0000_0010
     )
 
+    fun registerErrorCallback(callback: (String) -> Unit) {
+        onError = callback
+    }
+
     fun putData(address: Byte, data: Int) {
         memory[address.toInt()] = data
     }
@@ -40,8 +49,8 @@ class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister)
             InputOutputMode.OUTPUT -> {
                 try {
                     bus.data = memory[memoryAddressRegister.data]
-                } catch (e: MemoryException) {
-                    println("Memory overflow")
+                } catch (e: Exception) {
+                    onError?.invoke("Trying to access invalid memory address at ${memoryAddressRegister.data.format()}")
                 }
             }
             else -> {
@@ -66,6 +75,4 @@ class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister)
     }
 }
 
-class MemoryException : ArrayIndexOutOfBoundsException() {
-
-}
+class MemoryException : RuntimeException()

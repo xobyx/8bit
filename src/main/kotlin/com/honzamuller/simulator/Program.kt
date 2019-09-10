@@ -60,6 +60,34 @@ enum class Program(private val code: String) {
     1110:00000010
     1111:11111110
         """
+    ),
+    VON_NEUMAN(
+        """
+    0000:JMP 0010
+    0001:01010101
+    0010:LDA 0001
+    0011:HLT
+        """
+    ),
+    INC_DEC(
+        """
+    0000:LDI 0000
+    0001:ADD 1111
+    0010:JC 0100
+    0011:JMP 0001
+    0100:LDA 1110 
+    0101:SUB 1111
+    0110:JZ 0000
+    0111:JMP 0101
+    1110:11111111
+    1111:00000001
+        """
+    ),
+    MULTIPLY(
+        """
+    0001:LDI 0001
+    0010:OUT
+        """
     );
 
     fun getCode(): String {

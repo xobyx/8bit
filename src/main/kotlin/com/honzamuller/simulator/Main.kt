@@ -4,9 +4,15 @@ package com.honzamuller.simulator
 fun main() {
     val clock = Clock(10)
 
-    val computer = Computer(clock)
+    val computer = Computer(clock) {
+
+    }
+    computer.registerErrorCallback {
+        println(it)
+        clock.stop()
+    }
     //computer.printMemory()
-    computer.run(Program.FIBONACCI)
+    computer.run(Program.MULTIPLY)
 
     clock.tickAutomatically(10)
     //computer.printOutRegister()
