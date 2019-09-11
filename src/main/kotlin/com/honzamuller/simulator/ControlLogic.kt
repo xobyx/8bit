@@ -44,7 +44,7 @@ class ControlLogic(private val components: List<Component>, private val flagsReg
 
     private fun getInstruction(instructionCode: Byte): InstructionSet {
         InstructionSet.values().forEach {
-            if (it.value == instructionCode) {
+            if (it.opCode == instructionCode) {
                 return it
             }
         }
@@ -61,7 +61,7 @@ class ControlLogic(private val components: List<Component>, private val flagsReg
     }
 
     private fun tick() {
-        for (bc in components.filter { it is BusComponent }.sortedBy { (it as BusComponent).mode.ordinal }) {
+        for (bc in components.filterIsInstance<BusComponent>().sortedBy { it.mode.ordinal }) {
             (bc as BusComponent).tick()
         }
     }

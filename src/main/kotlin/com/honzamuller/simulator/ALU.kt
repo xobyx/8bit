@@ -37,11 +37,13 @@ class ALU(
             else -> {
             }
         }
+
+        minusOperator = false
+        enableFlags = false
     }
 
     override fun onPrepare() {
-        minusOperator = false
-        enableFlags = false
+
     }
 
     override fun onClear() {
@@ -50,9 +52,5 @@ class ALU(
 
     override fun printContent() {
         println("AL: ${data.format()} | $data")
-    }
-
-    fun minus() {
-        minusOperator = true
     }
 }

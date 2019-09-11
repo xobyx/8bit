@@ -8,11 +8,13 @@ class Parser(private val memory: Memory) {
 
     fun parse(code: String) {
         val rows = code.split('\n')
-        for (row in rows) {
+        for ((index, row) in rows.withIndex()) {
             val splitRow = row.split(":")
-            if (splitRow.size != 2) continue
-            val address = splitRow[0]
-            val dataSegment = splitRow[1]
+            var address: String? = null
+            val dataSegment = if (splitRow.size != 2) splitRow[0] else {
+                address = splitRow[0]
+                splitRow[1]
+            }
             var data = ""
             var instruction: InstructionSet? = null
             InstructionSet.values().forEach {
@@ -23,11 +25,16 @@ class Parser(private val memory: Memory) {
             if (instruction != null) {
                 val ins = instruction!!
                 data = if (ins.name.length == dataSegment.length) dataSegment + "0000" else dataSegment
-                data = data.replace(ins.name, ins.value.format(4), ignoreCase = true).replace(" ", "")
+                data = data.replace(ins.name, ins.opCode.format(4), ignoreCase = true).replace(" ", "")
             } else {
                 data = dataSegment
             }
-            memory.putData(bitsToByte(address), bitsToInt(data))
+            val addressBits = if (address == null) {
+                index.toByte()
+            } else {
+                bitsToByte(address)
+            }
+            memory.putData(addressBits, bitsToInt(data))
         }
     }
 

@@ -39,24 +39,24 @@ enum class Program(private val code: String) {
     ),
     TEST_1(
         """
-    0000:LDI 0001
-    0001:STA 1000
-    0010:LDI 0001
-    0011:STA 1001
-    0100:LDA 1000
-    0101:ADD 1001
-    0110:OUT
-    0111:JMP 0001
+    LDI 0001
+    STA 1000
+    LDI 0001
+    STA 1001
+    LDA 1000
+    ADD 1001
+    OUT
+    JMP 0001
     """
     ),
     TEST_2(
         """
-    0000:LDA 1111
-    0001:OUT
-    0010:ADD 1110
-    0011:JC 0000
-    0100:OUT
-    0101:HLT
+    LDA 1111
+    OUT
+    ADD 1110
+    JC 0000
+    OUT
+    HLT
     1110:00000010
     1111:11111110
         """

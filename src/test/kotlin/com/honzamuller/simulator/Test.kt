@@ -7,6 +7,15 @@ import org.junit.Test
 class Test {
 
     private enum class Program(val code: String) {
+        SHORTENED_CODE(
+            """
+    LDI 0001
+    ADD 1111
+    OUT
+    HLT
+    1111:00000011
+        """
+        ),
         ADD(
             """
     0001:LDI 0001
@@ -29,31 +38,30 @@ class Test {
 
     @Test
     fun testAdd() {
-        val clock = Clock(10)
-        val computer = Computer(clock)
-        clock.registerOnHalt {
-            Assert.assertEquals(2, computer.getComponent(OutputRegister::class).data)
-        }
-        computer.registerErrorCallback {
-            println(it)
-            clock.stop()
-        }
-        computer.run(Program.ADD.code.trimIndent())
-        clock.tickAutomatically(1)
+        runProgram(Program.ADD, 2)
     }
 
     @Test
     fun testSub() {
+        runProgram(Program.SUB, 0)
+    }
+
+    @Test
+    fun shortenedCode() {
+        runProgram(Program.SHORTENED_CODE, 4)
+    }
+
+    private fun runProgram(program: Program, result: Int) {
         val clock = Clock(10)
         val computer = Computer(clock)
         clock.registerOnHalt {
-            Assert.assertEquals(0, computer.getComponent(OutputRegister::class).data)
+            Assert.assertEquals(result, computer.getComponent(OutputRegister::class).data)
         }
         computer.registerErrorCallback {
             println(it)
             clock.stop()
         }
-        computer.run(Program.SUB.code.trimIndent())
+        computer.run(program.code.trimIndent())
         clock.tickAutomatically(1)
     }
 }
