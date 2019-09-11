@@ -2,7 +2,7 @@ package com.honzamuller.simulator
 
 import kotlin.reflect.KClass
 
-class Computer(private val clock: Clock, private val onCw: (List<ControlWords>) -> Unit) {
+class Computer(private val clock: Clock, private val onCw: ((List<ControlWords>) -> Unit)? = null) {
 
     private val allComponents = mutableListOf<Component>()
     private val busComponents = mutableListOf<BusComponent>()
