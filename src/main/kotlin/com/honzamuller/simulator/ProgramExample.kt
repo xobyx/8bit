@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-enum class Program(private val code: String) {
+enum class ProgramExample(private val code: String) {
     SUM_2_NUMBERS(
         """
     0000:LDA 1000
@@ -71,15 +71,21 @@ enum class Program(private val code: String) {
     ),
     INC_DEC(
         """
-    0000:LDI 0000
+    0000:LDA 1110
     0001:ADD 1111
-    0010:JC 0100
-    0011:JMP 0001
-    0100:LDA 1110 
-    0101:SUB 1111
-    0110:JZ 0000
-    0111:JMP 0101
-    1110:11111111
+    0010:OUT
+    0011:STA 1110
+    0100:SUB 1101
+    0101:JZ 0111
+    0110:JMP 0000
+    0111:LDA 1110 
+    1000:SUB 1111
+    1001:OUT
+    1010:STA 1110
+    1011:JZ 0000
+    1100:JMP 1000
+    1101:00010100
+    1110:00000000
     1111:00000001
         """
     ),

@@ -12,9 +12,9 @@ fun main() {
         clock.stop()
     }
     //computer.printMemory()
-    computer.run(Program.INC_DEC)
+    computer.run(ProgramExample.INC_DEC)
 
-    clock.tickAutomatically(1)
+    clock.tickAutomatically(10)
     //computer.printOutRegister()
     //computer.printMemory()
 }

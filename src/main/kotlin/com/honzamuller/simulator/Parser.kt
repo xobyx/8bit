@@ -2,8 +2,8 @@ package com.honzamuller.simulator
 
 class Parser(private val memory: Memory) {
 
-    fun parse (program: Program) {
-        parse(program.getCode())
+    fun parse (programExample: ProgramExample) {
+        parse(programExample.getCode())
     }
 
     fun parse(code: String) {

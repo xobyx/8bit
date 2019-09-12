@@ -39,8 +39,8 @@ class Computer(private val clock: Clock, private val onCw: ((List<ControlWords>)
         }
     }
 
-    fun run(program: Program) {
-        run(program.getCode())
+    fun run(programExample: ProgramExample) {
+        run(programExample.getCode())
     }
 
     fun registerErrorCallback(callback: (String) -> Unit) {
