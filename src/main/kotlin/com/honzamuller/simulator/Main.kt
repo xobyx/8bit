@@ -2,7 +2,7 @@ package com.honzamuller.simulator
 
 @ExperimentalStdlibApi
 fun main() {
-    val clock = Clock(10)
+    val clock = Clock()
 
     val computer = Computer(clock) {
 
@@ -12,7 +12,7 @@ fun main() {
         clock.stop()
     }
     //computer.printMemory()
-    computer.run(ProgramExample.INC_DEC)
+    computer.run(ProgramExample.MULTIPLY)
 
     clock.tickAutomatically(10)
     //computer.printOutRegister()

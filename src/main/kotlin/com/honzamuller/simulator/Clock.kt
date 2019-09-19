@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class Clock(private val freq: Long) : Component() {
+class Clock : Component() {
 
     private var counter: Int = 0
     private var running: Boolean = true
@@ -17,17 +17,16 @@ class Clock(private val freq: Long) : Component() {
         running = true
         while (running) {
             tick()
-            //readLine()
             Thread.sleep(freq.toLong())
         }
     }
 
-    fun registerOnTick(onTick: (Int) -> Unit) {
-        onTickCallback = onTick
-    }
-
     fun registerOnHalt(onHalt: () -> Unit) {
         onHaltCallback = onHalt
+    }
+
+    internal fun registerOnTick(onTick: (Int) -> Unit) {
+        onTickCallback = onTick
     }
 
     override fun onClear() {

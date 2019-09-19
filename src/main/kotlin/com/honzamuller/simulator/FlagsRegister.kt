@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class FlagsRegister : Component() {
+internal class FlagsRegister : Component() {
 
     var flagZero = false
     var flagCarry = false

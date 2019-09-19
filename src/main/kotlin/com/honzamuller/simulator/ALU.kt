@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class ALU(
+class ALU internal constructor(
     bus: Bus,
     private val registerA: RegisterA,
     private val registerB: RegisterB,

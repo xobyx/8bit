@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class Parser(private val memory: Memory) {
+internal class Parser(private val memory: Memory) {
 
     fun parse (programExample: ProgramExample) {
         parse(programExample.getCode())
@@ -8,14 +8,17 @@ class Parser(private val memory: Memory) {
 
     fun parse(code: String) {
         val rows = code.split('\n')
-        for ((index, row) in rows.withIndex()) {
+        var index = 0
+        for (row in rows) {
+            if (row.trimIndent().startsWith(";")) continue
             val splitRow = row.split(":")
             var address: String? = null
-            val dataSegment = if (splitRow.size != 2) splitRow[0] else {
+            var dataSegment = if (splitRow.size != 2) splitRow[0] else {
                 address = splitRow[0]
                 splitRow[1]
             }
-            var data = ""
+            dataSegment = dataSegment.replaceAfter(";", "").replace(";", "")
+            var data: String
             var instruction: InstructionSet? = null
             InstructionSet.values().forEach {
                 if (dataSegment.contains(it.name, ignoreCase = true)) {
@@ -35,6 +38,7 @@ class Parser(private val memory: Memory) {
                 bitsToByte(address)
             }
             memory.putData(addressBits, bitsToInt(data))
+            index ++
         }
     }
 

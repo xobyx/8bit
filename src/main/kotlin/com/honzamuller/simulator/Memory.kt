@@ -3,7 +3,7 @@ package com.honzamuller.simulator
 import java.lang.Exception
 import java.lang.RuntimeException
 
-class Memory(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister) : BusComponent(bus) {
+class Memory internal constructor(bus: Bus, private val memoryAddressRegister: MemoryAddressRegister) : BusComponent(bus) {
 
     private var onError: ((String) -> Unit)? = null
 

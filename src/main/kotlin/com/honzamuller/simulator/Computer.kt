@@ -2,7 +2,7 @@ package com.honzamuller.simulator
 
 import kotlin.reflect.KClass
 
-class Computer(private val clock: Clock, private val onCw: ((List<ControlWords>) -> Unit)? = null) {
+class Computer(private val clock: Clock, onCw: ((List<ControlWords>) -> Unit)? = null) {
 
     private val allComponents = mutableListOf<Component>()
     private val busComponents = mutableListOf<BusComponent>()
@@ -10,8 +10,6 @@ class Computer(private val clock: Clock, private val onCw: ((List<ControlWords>)
     private var controlLogic: ControlLogic
     private var memory: Memory
     private val parser: Parser
-    private var onError: ((String) -> Unit)? = null
-
 
     init {
         allComponents.add(clock)
@@ -33,24 +31,28 @@ class Computer(private val clock: Clock, private val onCw: ((List<ControlWords>)
         allComponents.add(bus)
     }
 
-    fun clear() {
-        allComponents.forEach {
-            it.onClear()
+    fun run(code: String) {
+        parser.parse(code)
+        clock.registerOnTick {
+            controlLogic.run(it)
         }
-    }
-
-    fun run(programExample: ProgramExample) {
-        run(programExample.getCode())
     }
 
     fun registerErrorCallback(callback: (String) -> Unit) {
         memory.registerErrorCallback(callback)
     }
 
-    fun run(code: String) {
-        parser.parse(code)
-        clock.registerOnTick {
-            controlLogic.run(it)
+    fun <T : Component> getComponent(clazz: KClass<T>): T {
+        return allComponents.first { it::class == clazz } as T
+    }
+
+    internal fun run(programExample: ProgramExample) {
+        run(programExample.getCode())
+    }
+
+    internal fun clear() {
+        allComponents.forEach {
+            it.onClear()
         }
     }
 
@@ -63,15 +65,11 @@ class Computer(private val clock: Clock, private val onCw: ((List<ControlWords>)
         println()
     }
 
-    fun printMemory() {
+    internal fun printMemory() {
         allComponents.first { it is Memory }.printContent()
     }
 
-    fun <T : Component> getComponent(clazz: KClass<T>): T {
-        return allComponents.first { it::class == clazz } as T
-    }
-
-    fun printOutRegister() {
+    internal fun printOutRegister() {
         val outputRegister = busComponents.first { it is OutputRegister } as OutputRegister
         outputRegister.printContent()
     }

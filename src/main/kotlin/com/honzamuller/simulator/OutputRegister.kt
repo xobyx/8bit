@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class OutputRegister(bus: Bus) : Register(bus) {
+class OutputRegister internal constructor(bus: Bus) : Register(bus) {
 
     override fun onControlWord(word: ControlWords): Boolean {
         when (word) {

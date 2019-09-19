@@ -2,16 +2,16 @@ package com.honzamuller.simulator
 
 abstract class Component {
 
-    open fun controlWord(word: ControlWords) {
+    internal open fun controlWord(word: ControlWords) {
         onControlWord(word)
     }
 
-    abstract fun onClear()
+    internal abstract fun onClear()
 
     /**
      * return true if word was consumed
      */
     protected abstract fun onControlWord(word: ControlWords): Boolean
 
-    abstract fun printContent()
+    internal abstract fun printContent()
 }

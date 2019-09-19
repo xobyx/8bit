@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class ControlLogic(private val components: List<Component>, private val flagsRegister: FlagsRegister, private val onCw: ((List<ControlWords>) -> Unit)? = null) {
+internal class ControlLogic(private val components: List<Component>, private val flagsRegister: FlagsRegister, private val onCw: ((List<ControlWords>) -> Unit)? = null) {
     private var instruction: InstructionSet? = null
     private val instructionRegister: InstructionRegister =
         components.first { it is InstructionRegister } as InstructionRegister

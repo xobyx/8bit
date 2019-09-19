@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class RegisterB(bus: Bus) : Register(bus) {
+class RegisterB internal constructor(bus: Bus) : Register(bus) {
 
     override fun onControlWord(word: ControlWords): Boolean {
         when (word) {

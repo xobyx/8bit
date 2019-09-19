@@ -1,6 +1,6 @@
 package com.honzamuller.simulator
 
-class ProgramCounter(bus: Bus) : BusComponent(bus) {
+class ProgramCounter internal constructor(bus: Bus) : BusComponent(bus) {
 
     var data: Int = 0b0000000
     private var increment: Boolean = false

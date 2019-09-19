@@ -1,8 +1,6 @@
 package com.honzamuller.simulator
 
-import kotlin.experimental.and
-
-class InstructionRegister(bus: Bus) : Register(bus) {
+class InstructionRegister internal constructor(bus: Bus) : Register(bus) {
 
     override fun onControlWord(word: ControlWords): Boolean {
         when (word) {
