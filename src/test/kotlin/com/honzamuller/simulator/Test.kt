@@ -52,7 +52,7 @@ class Test {
     }
 
     private fun runProgram(program: Program, result: Int) {
-        val clock = Clock(10)
+        val clock = Clock()
         val computer = Computer(clock)
         clock.registerOnHalt {
             Assert.assertEquals(result, computer.getComponent(OutputRegister::class).data)

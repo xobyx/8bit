@@ -21,6 +21,25 @@ enum class ProgramExample(private val code: String) {
     1111:00001101
         """
     ),
+    MULTIPLY_2(
+        """
+    LDA 1110
+    SUB 1100
+    JC  0110
+    LDA 1101
+    OUT
+    HLT
+    STA 1110
+    LDA 1101
+    ADD 1111
+    STA 1101
+    JMP 0000
+    1100:00000001
+    1101:00000000
+    1110:00010001
+    1111:00001101
+        """
+    ),
     SUM_3_NUMBERS(
         """
     ; Sum 1 + 1 + 15
