@@ -16,7 +16,7 @@ fun main() {
         clock.stop()
     }
     //computer.printMemory()
-    computer.run(ProgramExample.SUM_3_NUMBERS)
+    computer.run(ProgramExample.MULTIPLY_2)
 
 
     clock.tickAutomatically(1)

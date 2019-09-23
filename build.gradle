@@ -49,7 +49,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId 'com.honzamuller.simulator'
             artifactId 'library'
-            version '1.0.21'
+            version '1.0.22'
 
             from components.java
 

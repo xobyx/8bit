@@ -3,7 +3,7 @@ package com.honzamuller.simulator
 enum class ProgramExample(private val code: String) {
     MULTIPLY(
         """
-    ; Multiply 13 x 17
+    ; Multiply 7 x 9 - trivial implementation
     LDA 1100
     ADD 1111
     STA 1100
@@ -17,12 +17,13 @@ enum class ProgramExample(private val code: String) {
     HLT
     1100:00000000
     1101:00000001
-    1110:00010001
-    1111:00001101
+    1110:00000111
+    1111:00001001
         """
     ),
     MULTIPLY_2(
         """
+    ; Multiply 7 x 9
     LDA 1110
     SUB 1100
     JC  0110
@@ -36,8 +37,8 @@ enum class ProgramExample(private val code: String) {
     JMP 0000
     1100:00000001
     1101:00000000
-    1110:00010001
-    1111:00001101
+    1110:00000111
+    1111:00001001
         """
     ),
     SUM_3_NUMBERS(
