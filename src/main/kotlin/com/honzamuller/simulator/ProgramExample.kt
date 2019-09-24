@@ -105,7 +105,7 @@ enum class ProgramExample(private val code: String) {
     ),
     VON_NEUMAN(
         """
-    ; Put data and code together
+    ; Put data and instructions together
     0000:JMP 0010
     0001:01010101
     0010:LDA 0001

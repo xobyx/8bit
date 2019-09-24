@@ -2,7 +2,7 @@ package com.honzamuller.simulator
 
 class Clock : Component() {
 
-    private var counter: Int = 0
+    var counter: Int = 0
     private var running: Boolean = true
     private var onTickCallback: ((Int) -> Unit)? = null
     private var onHaltCallback: (() -> Unit)? = null
@@ -13,10 +13,11 @@ class Clock : Component() {
         }
     }
 
-    fun tickAutomatically(freq: Int) {
+    fun tickAutomatically(freq: Int, onTick: (Int) -> Unit = {}) {
         running = true
         while (running) {
             tick()
+            onTick.invoke(counter)
             Thread.sleep(freq.toLong())
         }
     }

@@ -1,7 +1,7 @@
 package com.honzamuller.simulator
 
 class Bus internal constructor(): Component() {
-    var data: Int = 0b0000000
+    var data: Int = 0b000_0000
 
     override fun onClear() {
         data = 0b0000_0000

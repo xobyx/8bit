@@ -26,8 +26,6 @@ class Computer(private val clock: Clock, onCw: ((List<ControlWords>) -> Unit)? =
         controlLogic = ControlLogic(allComponents, flagsRegister, onCw)
         memory.clear()
         parser = Parser(memory)
-
-
         allComponents.add(bus)
     }
 
@@ -49,29 +47,4 @@ class Computer(private val clock: Clock, onCw: ((List<ControlWords>) -> Unit)? =
     internal fun run(programExample: ProgramExample) {
         run(programExample.getCode())
     }
-
-    internal fun clear() {
-        allComponents.forEach {
-            it.onClear()
-        }
-    }
-
-    private fun print() {
-        allComponents.forEach { bc ->
-            if (bc !is Memory) {
-                bc.printContent()
-            }
-        }
-        println()
-    }
-
-    internal fun printMemory() {
-        allComponents.first { it is Memory }.printContent()
-    }
-
-    internal fun printOutRegister() {
-        val outputRegister = busComponents.first { it is OutputRegister } as OutputRegister
-        outputRegister.printContent()
-    }
-
 }
