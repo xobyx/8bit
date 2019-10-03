@@ -37,6 +37,7 @@ internal class Parser(private val memory: Memory) {
             } else {
                 bitsToByte(address)
             }
+            if (addressBits.toInt() > 15) break
             memory.putData(addressBits, bitsToInt(data))
             index ++
         }

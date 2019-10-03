@@ -62,7 +62,26 @@ class Test {
     1110:00000111
     1111:00001001
             """
-        );
+        ),
+        MULTIPLY_2(
+            """
+    LDA 1110
+    SUB 1100
+    JC  0110
+    LDA 1101
+    OUT
+    HLT
+    STA 1110
+    LDA 1101
+    ADD 1111
+    STA 1101
+    JMP 0000
+    1100:00000001
+    1101:00000000
+    1110:00000111
+    1111:00001001
+        """
+        )
     }
 
     @Test
@@ -88,6 +107,11 @@ class Test {
     @Test
     fun multiply() {
         runProgram(Program.MULTIPLY_7X9, 63)
+    }
+
+    @Test
+    fun multiply_2() {
+        runProgram(Program.MULTIPLY_2, 63)
     }
 
     private fun runProgram(program: Program, result: Int) {

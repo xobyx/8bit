@@ -13,7 +13,7 @@ fun main() {
         println(it)
         clock.stop()
     }
-    computer.run(ProgramExample.MULTIPLY_2)
+    computer.run(ProgramExample.LARGEST_DIVISOR)
 
     clock.tickAutomatically(1) { tick ->
         printRegisters(computer, tick)

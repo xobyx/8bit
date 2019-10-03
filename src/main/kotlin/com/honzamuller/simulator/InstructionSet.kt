@@ -35,6 +35,9 @@ enum class InstructionSet(val opCode: Byte, val microInstructions: List<MicroIns
     JC(0b0000_1000, listOf(
         MicroInstruction(ControlWords.IO, ControlWords.J)
     ), "Jump if carry into address specified by lower 4-bit operand"),
+    JNC(0b0000_1001, listOf(
+        MicroInstruction(ControlWords.IO, ControlWords.J)
+    ), "Jump if not carry into address specified by lower 4-bit operand"),
     OUT(0b0000_1110, listOf(MicroInstruction(ControlWords.AO, ControlWords.OI)),
     "Copy value from Register A into output register"),
     HLT(0b0000_1111, listOf(MicroInstruction(ControlWords.HLT)),

@@ -79,31 +79,7 @@ enum class ProgramExample(private val code: String) {
     0001:JMP 0000
         """
     ),
-    TEST_1(
-        """
-    LDI 0001
-    STA 1000
-    LDI 0001
-    STA 1001
-    LDA 1000
-    ADD 1001
-    OUT
-    JMP 0001
-    """
-    ),
-    TEST_2(
-        """
-    LDA 1111
-    OUT
-    ADD 1110
-    JC 0000
-    OUT
-    HLT
-    1110:00000010
-    1111:11111110
-        """
-    ),
-    VON_NEUMAN(
+    VON_NEUMANN(
         """
     ; Put data and instructions together
     0000:JMP 0010
@@ -132,6 +108,29 @@ enum class ProgramExample(private val code: String) {
     1110:00000000
     1111:00000001
         """
+    ),
+    LARGEST_DIVISOR(
+        """
+    ; Find largest divisor of number 45
+    ; Can change last 2 bytes to different number
+    LDA 1111
+    OUT
+    LDA 1110
+    SUB 1101
+    STA 1110
+    LDA 1111
+    SUB 1110
+    JZ  1010
+    JNC 0010
+    JMP 0110
+    LDA 1110
+    OUT
+    HLT
+    1101: 00000001
+    1110: 00101101
+    1111: 00101101
+        """
+
     );
 
 

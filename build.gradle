@@ -47,9 +47,9 @@ group 'com.honzamuller.simulator'
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId 'com.honzamuller.simulator'
+            groupId 'com.honzamuller.8bit'
             artifactId 'library'
-            version '1.0.23'
+            version '1.0.27'
 
             from components.java
 

@@ -29,6 +29,8 @@ internal class ControlLogic(private val components: List<Component>, private val
                         sendControlWords(ControlWords.NONE)
                     } else if (instruction == InstructionSet.JC && !flagsRegister.flagCarry) {
                         sendControlWords(ControlWords.NONE)
+                    } else if (instruction == InstructionSet.JNC && !flagsRegister.flagNotCarry) {
+                        sendControlWords(ControlWords.NONE)
                     } else {
                         val mi = microInstructions[internalStep]
                         sendControlWords(*mi.controlWords)

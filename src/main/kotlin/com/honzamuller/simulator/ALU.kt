@@ -22,7 +22,6 @@ class ALU internal constructor(
         return true
     }
 
-    @ExperimentalUnsignedTypes
     override fun onTick() {
         data = if (minusOperator) {
             registerA.data.minus(registerB.data)
@@ -31,7 +30,8 @@ class ALU internal constructor(
         }
         if (enableFlags) {
             flagsRegister.flagZero = data == 0
-            flagsRegister.flagCarry = data > 255 || (minusOperator && registerA.data.toUByte().minus(registerB.data.toUByte()) < 255u)
+            flagsRegister.flagCarry = data > 255 || (minusOperator && (registerA.data - registerB.data) >= 0)
+            flagsRegister.flagNotCarry = !flagsRegister.flagCarry
         }
         when (mode) {
             InputOutputMode.OUTPUT -> bus.data = data
